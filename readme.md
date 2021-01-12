@@ -20,6 +20,10 @@ In my opinion, fluent mapping is more expressive and customizable than attribute
 
 At the moment there is only support for PostgreSQL, but support for SQL Server is on it's way. If the demand is high enough I'll work on supporting the tool to work with MySQL as well.
 
+## .NET Support
+
+As of now, the code written will only properly supports VS2017 and onward projects. If you're using the old project format, you should probably move your projects to the new format even if you don't plan to migrate to .NET Core soon. This is because of a change in the way that csproj files are built. You can read more about that from Scott Hanselman [here](https://www.hanselman.com/blog/upgrading-an-existing-net-project-files-to-the-lean-new-csproj-format-from-net-core).
+
 ## Future of the project
 
 I plan to work on the generation of default [repositories](https://repodb.net/feature/repositories). Repositories often require more customization, so this will imply not just code generation, but code analysis so that the code generator can be smart enough to respect the code that the developer has written and not cause loss of work.
