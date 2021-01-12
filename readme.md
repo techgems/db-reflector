@@ -24,3 +24,5 @@ At the moment there is only support for PostgreSQL, but support for SQL Server i
 
 I plan to work on the generation of default [repositories](https://repodb.net/feature/repositories). Repositories often require more customization, so this will imply not just code generation, but code analysis so that the code generator can be smart enough to respect the code that the developer has written and not cause loss of work.
 However, the work for supporting SQL Server is a more important one.
+
+If demand is good enough, this could also be turned into a proper CLI that can be installed via nuget into any project, or as a Visual Studio Extension. But time will tell.
