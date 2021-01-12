@@ -25,7 +25,7 @@ namespace CodeGenerationRoslynTest.Generators
 
             mapperStringBuilder.AppendLine($"namespace {projectMetadata.DefaultNamespace}");
             mapperStringBuilder.AppendLine("{");
-            mapperStringBuilder.AppendLine("    public static class DatabaseNamePascalCaseMappers");
+            mapperStringBuilder.AppendLine($"    public static class {database.FormattedName}Mappers");
             mapperStringBuilder.AppendLine("    {");
             mapperStringBuilder.AppendLine("        public static void Setup()");
             mapperStringBuilder.AppendLine("        {");
