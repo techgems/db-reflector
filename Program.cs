@@ -48,14 +48,13 @@ namespace CodeGenerationRoslynTest
         {
             Configuration = new CommandLineConfiguration
             {
-                CSharpProjectFilePath = "C:/Users/cjime/Desktop/Professional Projects/LaCarte/LaCarteAPI/DB/DataAccess/LaCarte.SuperAdmin.DataAccess/LaCarte.SuperAdmin.DataAccess.csproj",
-                //CSharpProjectFilePath = "C:/Users/aroger/Desktop/Carlos/LaCarteAPI/DB/DataAccess/LaCarte.SuperAdmin.DataAccess/LaCarte.SuperAdmin.DataAccess.csproj",
+                CSharpProjectFilePath = "Your csproj file root here.",
                 GenerateRepoDbMapper = true,
-                DatabaseName = "la-carte-admin",
-                ConnectionString = "User ID=postgres;Password=123456;Server=localhost;Port=5432;Database=la-carte-admin;",
-                SupportedDatabase = SupportedDatabases.Postgres,
+                DatabaseName = "Your Database Name",
+                ConnectionString = "Your postgres connection string here.",
+                SupportedDatabase = SupportedDatabases.Postgres, //Currently only postgres is supported.
                 ForceRecreate = true,
-                TablesToIgnore = new List<string>() { "VersionInfo" }
+                TablesToIgnore = new List<string>() { "VersionInfo" } //Default migrations table for Fluent Migrator.
             };
         }
 
