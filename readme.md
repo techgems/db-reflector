@@ -30,3 +30,7 @@ I plan to work on the generation of default [repositories](https://repodb.net/fe
 However, the work for supporting SQL Server is a more important one.
 
 If demand is good enough, this could also be turned into a proper CLI that can be installed via nuget into any project, or as a Visual Studio Extension. But time will tell.
+
+## Suggested use
+
+Use this tool along a migration tool. I personally use [FluentMigrator](https://fluentmigrator.github.io/), but there are others you can use ([Evolve](https://evolve-db.netlify.app/), [Roundhouse](https://github.com/chucknorris/roundhouse)). That way you can have both database source control and a tool that facilitates adapting from the output of the migrations.
