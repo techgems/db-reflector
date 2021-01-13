@@ -47,7 +47,7 @@ namespace CodeGenerationRoslynTest.Generators
 
                     mapperStringBuilder.AppendLine($@"                .Column(c => c.{column.FormattedColumnName}, ""{column.ColumnName}"")");
                 }
-                mapperStringBuilder.AppendLine(";");
+                mapperStringBuilder.Append(";");
             }
 
             mapperStringBuilder.AppendLine("        }");

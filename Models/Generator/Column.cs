@@ -13,6 +13,7 @@ namespace CodeGenerationRoslynTest.Models.Generator
             IsPrimaryKey = isPrimaryKey;
         }
 
+        public bool IsIdentity { get; set; }
         public bool IsPrimaryKey { get; set; }
         public string ColumnName { get; set; }
         public string FormattedColumnName
