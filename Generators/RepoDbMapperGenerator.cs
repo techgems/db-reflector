@@ -25,7 +25,7 @@ namespace CodeGenerationRoslynTest.Generators
 
             mapperStringBuilder.AppendLine($"namespace {projectMetadata.DefaultNamespace}");
             mapperStringBuilder.AppendLine("{");
-            mapperStringBuilder.AppendLine("    public static class DatabaseNamePascalCaseMappers");
+            mapperStringBuilder.AppendLine($"    public static class {database.FormattedName}Mappers");
             mapperStringBuilder.AppendLine("    {");
             mapperStringBuilder.AppendLine("        public static void Setup()");
             mapperStringBuilder.AppendLine("        {");
@@ -47,7 +47,7 @@ namespace CodeGenerationRoslynTest.Generators
 
                     mapperStringBuilder.AppendLine($@"                .Column(c => c.{column.FormattedColumnName}, ""{column.ColumnName}"")");
                 }
-                mapperStringBuilder.AppendLine(";");
+                mapperStringBuilder.Append(";");
             }
 
             mapperStringBuilder.AppendLine("        }");

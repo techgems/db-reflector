@@ -17,6 +17,8 @@ using CodeGenerationRoslynTest.Models.Generator;
 
 namespace CodeGenerationRoslynTest
 {
+    //TO DO: Generator needs specifying the identity column.
+
     class Program
     {
         static CommandLineConfiguration Configuration = new CommandLineConfiguration();
