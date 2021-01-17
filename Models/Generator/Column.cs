@@ -5,7 +5,7 @@ namespace CodeGenerationRoslynTest.Models.Generator
 {
     public class Column
     {
-        public Column(string columnName, ColumnType type, bool isPrimaryKey, EntityOutputCasing casing = EntityOutputCasing.PascalCase)
+        public Column(string columnName, ColumnType type, bool isPrimaryKey, bool isIdentity, EntityOutputCasing casing = EntityOutputCasing.PascalCase)
         {
             ColumnName = columnName;
             Type = type;
@@ -13,6 +13,7 @@ namespace CodeGenerationRoslynTest.Models.Generator
             IsPrimaryKey = isPrimaryKey;
         }
 
+        public bool IsIdentity { get; set; }
         public bool IsPrimaryKey { get; set; }
         public string ColumnName { get; set; }
         public string FormattedColumnName

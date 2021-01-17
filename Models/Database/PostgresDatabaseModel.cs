@@ -18,6 +18,7 @@ namespace CodeGenerationRoslynTest.Models.Database
         public string table_catalog { get; set; } = "";
         public string table_name { get; set; } = "";
         public string is_nullable { get; set; } = "";
+        public string is_identity { get; set; } = ""; //Only for SQL Standard identity in Postgres 10 and above.
         public string udt_name { get; set; } = "";
         public string column_name { get; set; } = "";
     }

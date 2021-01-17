@@ -45,9 +45,11 @@ namespace CodeGenerationRoslynTest.Converters
                         bool isNull = column.is_nullable == "YES";
                         bool isPrimary = columnsWithPrimaryKeys.Any(col => col.column_name == column.column_name);
 
+                        bool isIdentity = column.is_identity == "YES";
+
                         var type = new ColumnType(column.udt_name, isNull, SupportedDatabases.Postgres);
 
-                        return new Column(column.column_name, type, isPrimary);
+                        return new Column(column.column_name, type, isPrimary, isIdentity);
                     }).ToList();
 
                     tableList.Add(new Table(table.table_name, columnsGeneratorModel, SupportedDatabases.Postgres));
