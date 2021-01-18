@@ -45,6 +45,11 @@ namespace CodeGenerationRoslynTest.Generators
                         mapperStringBuilder.AppendLine($@"                .Primary(c => c.{column.FormattedColumnName})");
                     }
 
+                    if(column.IsIdentity)
+                    {
+                        mapperStringBuilder.AppendLine($@"                .Identity(c => c.{column.FormattedColumnName})");
+                    }
+
                     mapperStringBuilder.AppendLine($@"                .Column(c => c.{column.FormattedColumnName}, ""{column.ColumnName}"")");
                 }
                 mapperStringBuilder.Append(";");
