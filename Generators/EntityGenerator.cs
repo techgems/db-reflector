@@ -8,6 +8,7 @@ using CodeGenerationRoslynTest.Models.VisualStudio;
 using CodeGenerationRoslynTest.Models.Config;
 using System.Linq;
 using CodeGenerationRoslynTest.Exceptions;
+using System;
 
 namespace CodeGenerationRoslynTest.Generators
 {
@@ -71,13 +72,20 @@ namespace CodeGenerationRoslynTest.Generators
 
             foreach (var columnMeta in tableMetadata.Columns)
             {
-                var propertyDeclaration = SyntaxFactory.PropertyDeclaration(SyntaxFactory.ParseTypeName(columnMeta.Type.CSharpTypeString), columnMeta.FormattedColumnName)
-                .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword))
-                .AddAccessorListAccessors(
-                    SyntaxFactory.AccessorDeclaration(SyntaxKind.GetAccessorDeclaration).WithSemicolonToken(SyntaxFactory.Token(SyntaxKind.SemicolonToken)),
-                    SyntaxFactory.AccessorDeclaration(SyntaxKind.SetAccessorDeclaration).WithSemicolonToken(SyntaxFactory.Token(SyntaxKind.SemicolonToken)));
+                var columnType = columnMeta.Type.CSharpTypeString;
+                var columnName = columnMeta.FormattedColumnName;
+                var databaseType = columnMeta.Type.DatabaseType;
 
-                entityClass = entityClass.AddMembers(propertyDeclaration);
+                var property = SyntaxFactory.ParseMemberDeclaration($"public {columnType} {columnName} {{ get; set; }}");
+
+                if(property != null && !string.IsNullOrWhiteSpace(columnType)) { 
+                    entityClass = entityClass.AddMembers(property);
+                }
+                else
+                {
+                    Console.WriteLine("Skipping Column Generation");
+                    Console.WriteLine($"Table Column belongs to: {tableMetadata.TableName}. Column: {columnName}. Database type {databaseType} not mapped.");
+                }
             }
 
             entityNamespace = entityNamespace.AddMembers(entityClass);

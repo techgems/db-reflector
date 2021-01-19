@@ -19,4 +19,9 @@
     <PackageReference Include="Npgsql" Version="5.0.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Logging\" />
+    <Folder Include="Models\Logging\" />
+  </ItemGroup>
+
 </Project>

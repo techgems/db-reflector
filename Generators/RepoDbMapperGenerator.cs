@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using System.IO;
 using System;
 using System.Text;
+using System.Linq;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.CSharp.Formatting;
 using CodeGenerationRoslynTest.Models.VisualStudio;
@@ -35,24 +36,46 @@ namespace CodeGenerationRoslynTest.Generators
             mapperStringBuilder.AppendLine("        private static void SetTableMappers()");
             mapperStringBuilder.AppendLine("        {");
 
-            foreach(var table in database.Tables)
+            
+
+            foreach (var table in database.Tables)
             {
                 mapperStringBuilder.AppendLine(@$"            FluentMapper.Entity<{table.FormattedTableName}>().Table(""{table.TableName}"")");
-                foreach(var column in table.Columns)
+
+                var lastColumnInList = table.Columns.Last();
+                foreach (var column in table.Columns)
                 {
-                    if(column.IsPrimaryKey)
+                    //If it failed to map the type, don't generate for the column.
+                    if(!string.IsNullOrWhiteSpace(column.Type.CSharpTypeString))
                     {
-                        mapperStringBuilder.AppendLine($@"                .Primary(c => c.{column.FormattedColumnName})");
-                    }
+                        if (column.IsPrimaryKey)
+                        {
+                            mapperStringBuilder.AppendLine($@"                .Primary(c => c.{column.FormattedColumnName})");
+                        }
 
-                    if(column.IsIdentity)
+                        if (column.IsIdentity)
+                        {
+                            mapperStringBuilder.AppendLine($@"                .Identity(c => c.{column.FormattedColumnName})");
+                        }
+
+                        if (column.ColumnName == lastColumnInList.ColumnName)
+                        {
+                            mapperStringBuilder.Append($@"                .Column(c => c.{column.FormattedColumnName}, ""{column.ColumnName}"")");
+                            mapperStringBuilder.AppendLine(";");
+                            mapperStringBuilder.AppendLine();
+
+                        }
+                        else
+                        {
+                            mapperStringBuilder.AppendLine($@"                .Column(c => c.{column.FormattedColumnName}, ""{column.ColumnName}"")");
+                        }
+                    }
+                    else
                     {
-                        mapperStringBuilder.AppendLine($@"                .Identity(c => c.{column.FormattedColumnName})");
+                        Console.WriteLine("Skipping Column Generation For Mapper.");
+                        Console.WriteLine($"Table Column belongs to: {table.TableName}. Column: {column.ColumnName}. Database type {column.Type.DatabaseType} cannot be mapped.");
                     }
-
-                    mapperStringBuilder.AppendLine($@"                .Column(c => c.{column.FormattedColumnName}, ""{column.ColumnName}"")");
                 }
-                mapperStringBuilder.Append(";");
             }
 
             mapperStringBuilder.AppendLine("        }");

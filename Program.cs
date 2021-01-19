@@ -50,13 +50,14 @@ namespace CodeGenerationRoslynTest
         {
             Configuration = new CommandLineConfiguration
             {
-                CSharpProjectFilePath = "Your csproj file root here.",
+                //CSharpProjectFilePath = "Your csproj file root here.",
+                CSharpProjectFilePath = "C:/Users/cjime/Desktop/Professional Projects/TestTrainMeDb/TestTrainMeDb.csproj",
                 GenerateRepoDbMapper = true,
-                DatabaseName = "Your Database Name",
-                ConnectionString = "Your postgres connection string here.",
+                DatabaseName = "trainme-dev",
+                ConnectionString = "User ID=postgres;Password=123456;Server=localhost;Port=5432;Database=trainme-dev;",
                 SupportedDatabase = SupportedDatabases.Postgres, //Currently only postgres is supported.
                 ForceRecreate = true,
-                TablesToIgnore = new List<string>() { "VersionInfo" } //Default migrations table for Fluent Migrator.
+                TablesToIgnore = new List<string>() { "migrations" } //Default migrations table for Fluent Migrator.
             };
         }
 

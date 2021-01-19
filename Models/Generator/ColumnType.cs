@@ -31,87 +31,48 @@ namespace CodeGenerationRoslynTest.Models.Generator
 
         private void MapPostgresTypeToCSharpType(string databaseType) 
         {
+            var basicType = "";
+            var isReferenceType = false;
+
             switch(databaseType)
             {
                 case "bool":
                 case "boolean":
-                    if(!IsNullable) 
-                    { 
-                        CSharpTypeString = "bool";
-                    }
-                    else 
-                    { 
-                        CSharpTypeString = "bool?";
-                    }
+                    basicType = "bool";
                     break;
                 case "uuid":
-                    if (!IsNullable)
-                    {
-                        CSharpTypeString = "Guid";
-                    }
-                    else
-                    {
-                        CSharpTypeString = "Guid?";
-                    }
+                    basicType = "Guid";
                     break;
                 case "int2":
-                    if (!IsNullable)
-                    {
-                        CSharpTypeString = "short";
-                    }   
-                    else
-                    { 
-                        CSharpTypeString = "short?";
-                    }
+                    basicType = "short";
                     break;
                 case "int4":
-                    if (!IsNullable)
-                    { 
-                        CSharpTypeString = "int";
-                    }
-                    else
-                    { 
-                        CSharpTypeString = "int?";
-                    }
+                    basicType = "int";
                     break;
                 case "int8":
-                    if (!IsNullable)
-                    {
-                        CSharpTypeString = "long";
-                    }
-                    else
-                    {
-                        CSharpTypeString = "long?";
-                    }
+                    basicType = "long";
+                    break;
+                case "float8":
+                    basicType = "double";
                     break;
                 case "money":
-                    if (!IsNullable)
-                    {
-                        CSharpTypeString = "decimal";
-                    }
-                    else
-                    {
-                        CSharpTypeString = "decimal?";
-                    }
+                    basicType = "decimal";
                     break;
                 case "varchar":
                 case "text":
                 case "json":
                 case "jsonb":
-                    CSharpTypeString = "string";
+                    isReferenceType = true;
+                    basicType = "string";
                     break;
                 case "date":
+                case "time":
                 case "timestamp":
-                    if (!IsNullable)
-                    {
-                        CSharpTypeString = "DateTime";
-                    }
-                    else
-                    {
-                        CSharpTypeString = "DateTime?";
-                    }
+                    basicType = "DateTime";
                     break;
             }
+
+            CSharpTypeString = (IsNullable && !isReferenceType) ? $"{basicType}?" : basicType;
         }
 
         private string MapSqlServerTypeToCSharpType(string databaseType)
