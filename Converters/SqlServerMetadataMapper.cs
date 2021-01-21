@@ -1,27 +1,28 @@
-﻿using CodeGenerationRoslynTest.DbScanners;
+﻿using CodeGenerationRoslynTest.Converters;
+using CodeGenerationRoslynTest.DbScanners;
 using CodeGenerationRoslynTest.Exceptions;
 using CodeGenerationRoslynTest.Models.Config;
 using CodeGenerationRoslynTest.Models.Database;
 using CodeGenerationRoslynTest.Models.Generator;
+using Humanizer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Humanizer;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CodeGenerationRoslynTest.Converters
+namespace RepoDbCodeGeneration.Converters
 {
-    public class PostgresMetadataMapper : IPostgresMetadataMapper
+    public class SqlServerMetadataMapper : ISqlServerMetadataMapper
     {
-        private readonly IDbScanner<PostgresTable, PostgresColumn> _databaseScanner;
+        private readonly IDbScanner<SqlServerTable, SqlServerColumn> _databaseScanner;
 
-        public PostgresMetadataMapper(IDbScanner<PostgresTable, PostgresColumn> databaseScanner)
+        public SqlServerMetadataMapper(IDbScanner<SqlServerTable, SqlServerColumn> databaseScanner)
         {
             _databaseScanner = databaseScanner;
         }
 
-        public Database CreateGeneratorModel(string connectionString, string dbName, List<string> tablesToIgnore, string schema = "public")
+        public Database CreateGeneratorModel(string connectionString, string dbName, List<string> tablesToIgnore, string schema = "dbo")
         {
             var tableList = new List<Table>();
 
@@ -31,28 +32,28 @@ namespace CodeGenerationRoslynTest.Converters
                 var columnsMetadata = _databaseScanner.GetColumnsFromDatabase(dbName, schema);
                 var columnsWithPrimaryKeys = _databaseScanner.GetColumnsFromDatabaseWithPK(dbName, schema);
 
-                foreach (var table in tablesMetadata)
+                foreach(var table in tablesMetadata)
                 {
-                    if (tablesToIgnore.Contains(table.table_name))
+                    if(tablesToIgnore.Contains(table.TABLE_NAME))
                         continue;
 
                     var tableColumns = new List<Column>();
 
-                    var columnsInTable = columnsMetadata.Where(x => x.table_name == table.table_name);
+                    var columnsInTable = columnsMetadata.Where(x => x.TABLE_NAME == table.TABLE_NAME);
 
                     var columnsGeneratorModel = columnsInTable.Select(column =>
                     {
-                        bool isNull = column.is_nullable == "YES";
-                        bool isPrimary = columnsWithPrimaryKeys.Any(col => col.column_name == column.column_name);
+                        bool isNull = column.IS_NULLABLE == "YES";
+                        bool isPrimary = columnsWithPrimaryKeys.Any(col => col.COLUMN_NAME == column.COLUMN_NAME);
 
-                        bool isIdentity = column.is_identity == "YES";
+                        bool isIdentity = column.IS_IDENTITY == "YES";
 
-                        var type = new ColumnType(column.udt_name, isNull, SupportedDatabases.Postgres);
+                        var type = new ColumnType(column.DATA_TYPE, isNull, SupportedDatabases.SqlServer);
 
-                        return new Column(column.column_name, type, isPrimary, isIdentity);
+                        return new Column(column.COLUMN_NAME, type, isPrimary, isIdentity);
                     }).ToList();
 
-                    tableList.Add(new Table(table.table_name, columnsGeneratorModel, SupportedDatabases.Postgres));
+                    tableList.Add(new Table(table.TABLE_NAME, columnsGeneratorModel, SupportedDatabases.SqlServer));
                 }
 
                 return new Database

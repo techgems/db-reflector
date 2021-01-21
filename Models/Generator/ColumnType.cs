@@ -72,12 +72,62 @@ namespace CodeGenerationRoslynTest.Models.Generator
                     break;
             }
 
-            CSharpTypeString = (IsNullable && !isReferenceType) ? $"{basicType}?" : basicType;
+            CSharpTypeString = (!string.IsNullOrEmpty(basicType) && IsNullable && !isReferenceType) ? $"{basicType}?" : basicType;
         }
 
-        private string MapSqlServerTypeToCSharpType(string databaseType)
+        private void MapSqlServerTypeToCSharpType(string databaseType)
         {
-            return "DOESN'T WORK";
+            var basicType = "";
+            var isReferenceType = false;
+
+            switch(databaseType)
+            {
+                case "bit":
+                    basicType = "bool";
+                    break;
+                case "uniqueidentifier":
+                    basicType = "Guid";
+                    break;
+                case "tinyint":
+                case "smallint":
+                    basicType = "short";
+                    break;
+                case "int":
+                    basicType = "int";
+                    break;
+                case "bigint":
+                    basicType = "long";
+                    break;
+                case "float":
+                    basicType = "float";
+                    break;
+                case "real":
+                    basicType = "double";
+                    break;
+                case "money":
+                case "decimal":
+                    basicType = "decimal";
+                    break;
+                case "varchar":
+                case "nvarchar":
+                case "ntext":
+                case "text":
+                case "nchar":
+                case "char":
+                    isReferenceType = true;
+                    basicType = "string";
+                    break;
+                case "date":
+                case "time":
+                case "datetime":
+                case "datetime2":
+                case "datetimeoffset":
+                case "smalldatetime":
+                    basicType = "DateTime";
+                    break;
+            }
+
+            CSharpTypeString = (!string.IsNullOrEmpty(basicType) && IsNullable && !isReferenceType) ? $"{basicType}?" : basicType;
         }
     }
 }

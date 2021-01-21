@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Threading.Tasks;
 using CodeGenerationRoslynTest.Converters;
 using CodeGenerationRoslynTest.DbScanners;
 using CodeGenerationRoslynTest.Models.Config;
 using System.Collections.Generic;
 using CodeGenerationRoslynTest.Models.Database;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using CodeGenerationRoslynTest.Generators;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +11,8 @@ using CodeGenerationRoslynTest.Generators.Interfaces;
 using CodeGenerationRoslynTest.VisualStudio;
 using CodeGenerationRoslynTest.Exceptions;
 using CodeGenerationRoslynTest.Models.Generator;
+using RepoDbCodeGeneration.Converters;
+using RepoDbCodeGeneration.DbScanners;
 
 namespace CodeGenerationRoslynTest
 {
@@ -23,14 +22,16 @@ namespace CodeGenerationRoslynTest
     {
         static CommandLineConfiguration Configuration = new CommandLineConfiguration();
 
-        private readonly IMetadataMapper _postgresMetadataMapper;
+        private readonly IPostgresMetadataMapper _postgresMetadataMapper;
+        private readonly ISqlServerMetadataMapper _sqlServerMetadataMapper;
         private readonly IProjectLoader _projectLoader;
         private readonly IGenerator _entityGenerator;
         private readonly IGenerator _mapperGenerator;
 
-        public Program(IMetadataMapper metadataMapper, IEnumerable<IGenerator> generators, IProjectLoader projectLoader)
+        public Program(ISqlServerMetadataMapper sqlServerMapper, IPostgresMetadataMapper postgresMapper, IEnumerable<IGenerator> generators, IProjectLoader projectLoader)
         {
-            _postgresMetadataMapper = metadataMapper;
+            _sqlServerMetadataMapper = sqlServerMapper;
+            _postgresMetadataMapper = postgresMapper;
             _projectLoader = projectLoader;
 
             foreach(var generator in generators)
@@ -51,11 +52,13 @@ namespace CodeGenerationRoslynTest
             Configuration = new CommandLineConfiguration
             {
                 //CSharpProjectFilePath = "Your csproj file root here.",
-                CSharpProjectFilePath = "C:/Users/cjime/Desktop/Professional Projects/TestTrainMeDb/TestTrainMeDb.csproj",
+                CSharpProjectFilePath = "C:/Users/cjime/Desktop/Professional Projects/SqlServerSample/SqlServerSample.csproj",
                 GenerateRepoDbMapper = true,
-                DatabaseName = "trainme-dev",
-                ConnectionString = "User ID=postgres;Password=123456;Server=localhost;Port=5432;Database=trainme-dev;",
-                SupportedDatabase = SupportedDatabases.Postgres, //Currently only postgres is supported.
+                DatabaseName = "Northwind",
+                ConnectionString = "Server=localhost;Database=Northwind;Trusted_Connection=True;",
+                //ConnectionString = "User ID=postgres;Password=123456;Server=localhost;Port=5432;Database=trainme-dev;",
+                //SupportedDatabase = SupportedDatabases.Postgres,
+                DatabaseEngine = SupportedDatabases.SqlServer,
                 ForceRecreate = true,
                 TablesToIgnore = new List<string>() { "migrations" } //Default migrations table for Fluent Migrator.
             };
@@ -75,12 +78,13 @@ namespace CodeGenerationRoslynTest
                 var databaseMetadata = new Database();
                 var projectMetadata = _projectLoader.GetCSharpProjectMetadata(Configuration.CSharpProjectFilePath);
 
-                switch (Configuration.SupportedDatabase)
+                switch (Configuration.DatabaseEngine)
                 {
                     case SupportedDatabases.Postgres:
                         databaseMetadata = _postgresMetadataMapper.CreateGeneratorModel(Configuration.ConnectionString, Configuration.DatabaseName, Configuration.TablesToIgnore);
                         break;
                     case SupportedDatabases.SqlServer:
+                        databaseMetadata = _sqlServerMetadataMapper.CreateGeneratorModel(Configuration.ConnectionString, Configuration.DatabaseName, Configuration.TablesToIgnore);
                         break;
                 }
 
@@ -115,11 +119,13 @@ namespace CodeGenerationRoslynTest
             return Host.CreateDefaultBuilder(args).ConfigureServices(services =>
             {
                 services.AddTransient<Program>();
+                services.AddTransient<IDbScanner<PostgresTable, PostgresColumn>>(provider => new PostgresDatabaseScanner(Configuration.ConnectionString));
+                services.AddTransient<IDbScanner<SqlServerTable, SqlServerColumn>>(provider => new SqlServerDatabaseScanner(Configuration.ConnectionString));
                 services.AddTransient<IGenerator, EntityGenerator>(); 
                 services.AddTransient<IGenerator, RepoDbMapperGenerator>();
-                services.AddTransient<IMetadataMapper, PostgresMetadataMapper>();
+                services.AddTransient<IPostgresMetadataMapper, PostgresMetadataMapper>();
+                services.AddTransient<ISqlServerMetadataMapper, SqlServerMetadataMapper>();
                 services.AddTransient<IProjectLoader, ProjectLoader>();
-                services.AddTransient<IDbScanner<PostgresTable, PostgresColumn>>(provider => new PostgresDatabaseScanner(Configuration.ConnectionString));
             });
         }
     }

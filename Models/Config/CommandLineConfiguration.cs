@@ -13,7 +13,7 @@ namespace CodeGenerationRoslynTest.Models.Config
         public string CSharpProjectFilePath { get; set; } = "";
         public bool GenerateRepoDbMapper { get; init; }
         public string ConnectionString { get; set; } = "";
-        public SupportedDatabases SupportedDatabase { get; init; }
+        public SupportedDatabases DatabaseEngine { get; init; }
         public string EntitiesFolder { get; set; } = "Entities";
         public bool ForceRecreate { get; init; }
         public List<string> TablesToIgnore { get; set; } = new List<string>();

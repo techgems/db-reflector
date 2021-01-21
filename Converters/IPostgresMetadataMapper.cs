@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CodeGenerationRoslynTest.Converters
 {
-    public interface IMetadataMapper
+    public interface IPostgresMetadataMapper
     {
         Database CreateGeneratorModel(string connectionString, string dbName, List<string> tablesToIgnore, string schema = "public");
     }

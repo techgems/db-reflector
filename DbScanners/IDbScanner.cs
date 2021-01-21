@@ -10,7 +10,6 @@ namespace CodeGenerationRoslynTest.DbScanners
     {
         List<TableType> GetTablesFromDatabase(string databaseName, string schema);
         List<ColumnType> GetColumnsFromDatabase(string databaseName, string schema);
-        List<ColumnType> GetColumnsFromTable(string tableName);
         List<ColumnType> GetColumnsFromDatabaseWithPK(string databaseName, string schema);
     }
 }

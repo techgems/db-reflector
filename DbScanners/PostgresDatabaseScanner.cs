@@ -45,18 +45,6 @@ namespace CodeGenerationRoslynTest.DbScanners
             }
         }
 
-        public List<PostgresColumn> GetColumnsFromTable(string tableName)
-        {
-            using (var conn = new NpgsqlConnection(ConnectionString))
-            {
-                var columnsQuery = "select * from information_schema.columns where table_name = @table";
-
-                var columns = conn.Query<PostgresColumn>(columnsQuery, new { table = tableName }).ToList();
-
-                return columns;
-            }
-        }
-
         public List<PostgresColumn> GetColumnsFromDatabaseWithPK(string databaseName, string schema)
         {
             using(var conn = new NpgsqlConnection(ConnectionString))
