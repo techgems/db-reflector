@@ -36,44 +36,39 @@ namespace CodeGenerationRoslynTest.Generators
             mapperStringBuilder.AppendLine("        private static void SetTableMappers()");
             mapperStringBuilder.AppendLine("        {");
 
-            
 
-            foreach (var table in database.Tables)
+
+            foreach(var table in database.Tables)
             {
                 mapperStringBuilder.AppendLine(@$"            FluentMapper.Entity<{table.FormattedTableName}>().Table(""{table.TableName}"")");
 
-                var lastColumnInList = table.Columns.Last();
-                foreach (var column in table.Columns)
+
+                //If no valid type mapping is available, don't generate.
+                var columnsWithValidTypeMappings = table.Columns.Where(c => !string.IsNullOrWhiteSpace(c.Type.CSharpTypeString));
+                var lastColumnInList = columnsWithValidTypeMappings.Last();
+
+                foreach(var column in columnsWithValidTypeMappings)
                 {
-                    //If it failed to map the type, don't generate for the column.
-                    if(!string.IsNullOrWhiteSpace(column.Type.CSharpTypeString))
+                    if(column.IsPrimaryKey)
                     {
-                        if (column.IsPrimaryKey)
-                        {
-                            mapperStringBuilder.AppendLine($@"                .Primary(c => c.{column.FormattedColumnName})");
-                        }
+                        mapperStringBuilder.AppendLine($@"                .Primary(c => c.{column.FormattedColumnName})");
+                    }
 
-                        if (column.IsIdentity)
-                        {
-                            mapperStringBuilder.AppendLine($@"                .Identity(c => c.{column.FormattedColumnName})");
-                        }
+                    if(column.IsIdentity)
+                    {
+                        mapperStringBuilder.AppendLine($@"                .Identity(c => c.{column.FormattedColumnName})");
+                    }
 
-                        if (column.ColumnName == lastColumnInList.ColumnName)
-                        {
-                            mapperStringBuilder.Append($@"                .Column(c => c.{column.FormattedColumnName}, ""{column.ColumnName}"")");
-                            mapperStringBuilder.AppendLine(";");
-                            mapperStringBuilder.AppendLine();
+                    if(column.ColumnName == lastColumnInList.ColumnName)
+                    {
+                        mapperStringBuilder.Append($@"                .Column(c => c.{column.FormattedColumnName}, ""{column.ColumnName}"")");
+                        mapperStringBuilder.AppendLine(";");
+                        mapperStringBuilder.AppendLine();
 
-                        }
-                        else
-                        {
-                            mapperStringBuilder.AppendLine($@"                .Column(c => c.{column.FormattedColumnName}, ""{column.ColumnName}"")");
-                        }
                     }
                     else
                     {
-                        Console.WriteLine("Skipping Column Generation For Mapper.");
-                        Console.WriteLine($"Table Column belongs to: {table.TableName}. Column: {column.ColumnName}. Database type {column.Type.DatabaseType} cannot be mapped.");
+                        mapperStringBuilder.AppendLine($@"                .Column(c => c.{column.FormattedColumnName}, ""{column.ColumnName}"")");
                     }
                 }
             }
@@ -84,7 +79,7 @@ namespace CodeGenerationRoslynTest.Generators
 
             var filePath = $"{projectMetadata.BasePath}/{database.FormattedName}Mappers.cs";
 
-            if (File.Exists(filePath))
+            if(File.Exists(filePath))
             {
                 if(cliConfig.ForceRecreate)
                 {
@@ -103,7 +98,7 @@ namespace CodeGenerationRoslynTest.Generators
 
         private void WriteCodeFileToDisk(string path, string code)
         {
-            using (var sourceWriter = new StreamWriter(path))
+            using(var sourceWriter = new StreamWriter(path))
             {
                 sourceWriter.WriteLine(code);
             }

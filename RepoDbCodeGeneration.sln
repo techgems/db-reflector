@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepoDbCodeGeneration", "RepoDbCodeGeneration.csproj", "{EF7E885B-65EB-42DD-ADA4-BC1751BE6480}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlServerSample", "..\SqlServerSample\SqlServerSample.csproj", "{EC0ED95A-1B4D-49F3-B203-CD99B8C0B4CE}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{EF7E885B-65EB-42DD-ADA4-BC1751BE6480}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF7E885B-65EB-42DD-ADA4-BC1751BE6480}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF7E885B-65EB-42DD-ADA4-BC1751BE6480}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EC0ED95A-1B4D-49F3-B203-CD99B8C0B4CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EC0ED95A-1B4D-49F3-B203-CD99B8C0B4CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EC0ED95A-1B4D-49F3-B203-CD99B8C0B4CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EC0ED95A-1B4D-49F3-B203-CD99B8C0B4CE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
