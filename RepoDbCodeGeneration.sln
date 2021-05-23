@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepoDbCodeGeneration", "RepoDbCodeGeneration.csproj", "{EF7E885B-65EB-42DD-ADA4-BC1751BE6480}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepoDbReflection.CLI", "..\RepoDbReflection.CLI\RepoDbReflection.CLI.csproj", "{3A663AE9-AC74-4EE0-947F-36E7655672BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepoDbReflection.Core", "..\RepoDbReflection.Core\RepoDbReflection.Core.csproj", "{93DB0A96-0AA3-4F85-8C1D-C4FF9037376C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{EF7E885B-65EB-42DD-ADA4-BC1751BE6480}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF7E885B-65EB-42DD-ADA4-BC1751BE6480}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF7E885B-65EB-42DD-ADA4-BC1751BE6480}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A663AE9-AC74-4EE0-947F-36E7655672BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A663AE9-AC74-4EE0-947F-36E7655672BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A663AE9-AC74-4EE0-947F-36E7655672BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A663AE9-AC74-4EE0-947F-36E7655672BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93DB0A96-0AA3-4F85-8C1D-C4FF9037376C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93DB0A96-0AA3-4F85-8C1D-C4FF9037376C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93DB0A96-0AA3-4F85-8C1D-C4FF9037376C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93DB0A96-0AA3-4F85-8C1D-C4FF9037376C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

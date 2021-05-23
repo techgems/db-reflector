@@ -49,7 +49,21 @@ namespace CodeGenerationRoslynTest
 
         static void InitConfig()
         {
+            //Postgres Config
             Configuration = new CommandLineConfiguration
+            {
+                //CSharpProjectFilePath = "Your csproj file root here.",
+                CSharpProjectFilePath = "C:/Users/cjime/Desktop/Professional Projects/LaCarte/LaCarteAPI/NewSolution/RestaurantAdmin/LaCarte.RestaurantAdmin.DataAccess/LaCarte.RestaurantAdmin.DataAccess.csproj",
+                GenerateRepoDbMapper = true,
+                DatabaseName = "restaurant-admin",
+                ConnectionString = "User ID=postgres;Password=123456;Server=localhost;Port=5432;Database=restaurant-admin;",
+                DatabaseEngine = SupportedDatabases.Postgres,
+                ForceRecreate = true,
+                TablesToIgnore = new List<string>() { "VersionInfo" } //Default migrations table for Fluent Migrator.
+            };
+
+            //SQL Server Config
+            /*Configuration = new CommandLineConfiguration
             {
                 //CSharpProjectFilePath = "Your csproj file root here.",
                 CSharpProjectFilePath = "C:/Users/cjime/Desktop/Professional Projects/SqlServerSample/SqlServerSample.csproj",
@@ -61,7 +75,7 @@ namespace CodeGenerationRoslynTest
                 DatabaseEngine = SupportedDatabases.SqlServer,
                 ForceRecreate = true,
                 TablesToIgnore = new List<string>() { "migrations" } //Default migrations table for Fluent Migrator.
-            };
+            };*/
         }
 
         static void Main(string[] args)
