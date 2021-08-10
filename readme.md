@@ -1,4 +1,4 @@
-# Repo DB Code Generation
+# Db Reflector
 
 This project is a dev tool for entities and mapping code generation for the ORM [Repo Db](https://repodb.net/).
 Repo DB is an amazing tool that grants the best of both worlds between a micro-ORM like Dapper and a full ORM like Entity Framework.
