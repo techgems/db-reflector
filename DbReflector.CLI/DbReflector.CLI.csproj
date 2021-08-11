@@ -14,4 +14,8 @@
     <ProjectReference Include="..\DbReflector.Core\DbReflector.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Logging\" />
+  </ItemGroup>
+
 </Project>

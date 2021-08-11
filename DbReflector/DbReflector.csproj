@@ -8,8 +8,11 @@
 
   <ItemGroup>
     <Compile Remove="Logging\**" />
+    <Compile Remove="Models\Logging\**" />
     <EmbeddedResource Remove="Logging\**" />
+    <EmbeddedResource Remove="Models\Logging\**" />
     <None Remove="Logging\**" />
+    <None Remove="Models\Logging\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,10 +27,6 @@
     <PackageReference Include="MySql.Data" Version="8.0.22" />
     <PackageReference Include="Npgsql" Version="5.0.1.1" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\Logging\" />
   </ItemGroup>
 
 </Project>
