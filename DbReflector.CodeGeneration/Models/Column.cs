@@ -1,7 +1,7 @@
 ﻿using Humanizer;
-using DbReflector.Utils;
+using DbReflector.Common;
 
-namespace DbReflector.Databases.EntityDataModel
+namespace DbReflector.CodeGeneration.Models
 {
     public class Column
     {

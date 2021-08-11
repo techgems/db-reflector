@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DbReflector.Utils\DbReflector.Utils.csproj" />
+    <ProjectReference Include="..\DbReflector.Utils\DbReflector.Common.csproj" />
   </ItemGroup>
 
 </Project>

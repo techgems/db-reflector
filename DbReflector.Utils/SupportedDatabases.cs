@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DbReflector.Utils
+namespace DbReflector.Common
 {
     public enum SupportedDatabases
     {

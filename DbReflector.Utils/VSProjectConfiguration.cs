@@ -6,10 +6,5 @@ using System.Threading.Tasks;
 
 namespace DbReflector.Common
 {
-    public enum EntityOutputCasing
-    {
-        KeepSource,
-        PascalCase,
-        SnakeCase
-    }
+    public record VSProjectMetadata(string DefaultNamespace, string BasePath, string Language);
 }

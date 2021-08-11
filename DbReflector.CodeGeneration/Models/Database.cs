@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DbReflector.Utils;
+using DbReflector.Common;
 
-namespace DbReflector.Databases.EntityDataModel
+namespace DbReflector.CodeGeneration.Models
 {
     public class Database
     {

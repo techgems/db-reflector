@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbReflector.Core", "DbRefle
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbReflector.Databases", "DbReflector.Databases\DbReflector.Databases.csproj", "{F3DE7615-5F34-4B06-814C-88FA1BF6F4EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbReflector.Utils", "DbReflector.Utils\DbReflector.Utils.csproj", "{03B417EC-3E3C-4160-A9FB-0BF1CA48F115}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbReflector.Common", "DbReflector.Utils\DbReflector.Common.csproj", "{03B417EC-3E3C-4160-A9FB-0BF1CA48F115}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
