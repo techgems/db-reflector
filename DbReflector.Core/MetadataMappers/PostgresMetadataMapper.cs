@@ -25,9 +25,9 @@ namespace DbReflector.Core.MetadataMappers
 
             try
             {
-                var tablesMetadata = _databaseScanner.GetTablesFromDatabase(dbName, schema);
-                var columnsMetadata = _databaseScanner.GetColumnsFromDatabase(dbName, schema);
-                var columnsWithPrimaryKeys = _databaseScanner.GetColumnsFromDatabaseWithPK(dbName, schema);
+                var tablesMetadata = _databaseScanner.GetTablesFromDatabase(connectionString, dbName, schema);
+                var columnsMetadata = _databaseScanner.GetColumnsFromDatabase(connectionString, dbName, schema);
+                var columnsWithPrimaryKeys = _databaseScanner.GetColumnsFromDatabaseWithPK(connectionString, dbName, schema);
 
                 foreach (var table in tablesMetadata)
                 {

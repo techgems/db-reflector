@@ -11,16 +11,9 @@ namespace DbReflector.Databases
 {
     public class PostgresDatabaseScanner : IDbScanner<PostgresTable, PostgresColumn>
     {
-        private string ConnectionString { get; set; }
-
-        public PostgresDatabaseScanner(string connectionString)
+        public List<PostgresTable> GetTablesFromDatabase(string connectionString, string databaseName, string schema = "public")
         {
-            ConnectionString = connectionString;
-        }
-
-        public List<PostgresTable> GetTablesFromDatabase(string databaseName, string schema = "public")
-        {
-            using (var conn = new NpgsqlConnection(ConnectionString))
+            using (var conn = new NpgsqlConnection(connectionString))
             {
                 var tablesQuery = "select * from information_schema.tables where table_catalog = @database and table_schema = @schema";
 
@@ -31,9 +24,9 @@ namespace DbReflector.Databases
             }
         }
 
-        public List<PostgresColumn> GetColumnsFromDatabase(string databaseName, string schema = "public")
+        public List<PostgresColumn> GetColumnsFromDatabase(string connectionString, string databaseName, string schema = "public")
         {
-            using (var conn = new NpgsqlConnection(ConnectionString))
+            using (var conn = new NpgsqlConnection(connectionString))
             {
                 var columnsQuery = "select * from information_schema.columns where table_catalog = @database and table_schema = @schema";
 
@@ -43,9 +36,9 @@ namespace DbReflector.Databases
             }
         }
 
-        public List<PostgresColumn> GetColumnsFromDatabaseWithPK(string databaseName, string schema)
+        public List<PostgresColumn> GetColumnsFromDatabaseWithPK(string connectionString, string databaseName, string schema)
         {
-            using(var conn = new NpgsqlConnection(ConnectionString))
+            using(var conn = new NpgsqlConnection(connectionString))
             {
                 var columnsWithPrimaryKeyQuery = @"select distinct(col.column_name), col.table_name, col.table_catalog 
                                                     from information_schema.columns as col

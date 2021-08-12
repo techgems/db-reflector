@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbReflector", "DbReflector\DbReflector.csproj", "{C6AE7C6B-C9B0-4FF9-BC92-4224CE8755B2}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbReflector.CLI", "DbReflector.CLI\DbReflector.CLI.csproj", "{722E9B7D-43CD-4949-A41A-79F50C245636}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbReflector.CodeGeneration", "DbReflector.CodeGeneration\DbReflector.CodeGeneration.csproj", "{136288DA-1A35-4FA3-BD82-2098ABE7AF44}"
@@ -21,10 +19,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C6AE7C6B-C9B0-4FF9-BC92-4224CE8755B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C6AE7C6B-C9B0-4FF9-BC92-4224CE8755B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C6AE7C6B-C9B0-4FF9-BC92-4224CE8755B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C6AE7C6B-C9B0-4FF9-BC92-4224CE8755B2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{722E9B7D-43CD-4949-A41A-79F50C245636}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{722E9B7D-43CD-4949-A41A-79F50C245636}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{722E9B7D-43CD-4949-A41A-79F50C245636}.Release|Any CPU.ActiveCfg = Release|Any CPU

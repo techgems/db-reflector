@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis;
 using System.Linq;
 using System;
 using DbReflector.Core.Exceptions;
+using DbReflector.Common;
 
 namespace DbReflector.Core.ProjectMetadata
 {

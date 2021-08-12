@@ -8,8 +8,8 @@ namespace DbReflector.Databases
 {
     public interface IDbScanner<TableType, ColumnType>
     {
-        List<TableType> GetTablesFromDatabase(string databaseName, string schema);
-        List<ColumnType> GetColumnsFromDatabase(string databaseName, string schema);
-        List<ColumnType> GetColumnsFromDatabaseWithPK(string databaseName, string schema);
+        List<TableType> GetTablesFromDatabase(string connectionString, string databaseName, string schema);
+        List<ColumnType> GetColumnsFromDatabase(string connectionString, string databaseName, string schema);
+        List<ColumnType> GetColumnsFromDatabaseWithPK(string connectionString, string databaseName, string schema);
     }
 }

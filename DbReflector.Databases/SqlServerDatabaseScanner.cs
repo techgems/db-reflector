@@ -11,16 +11,9 @@ namespace DbReflector.Databases
 {
     public class SqlServerDatabaseScanner : IDbScanner<SqlServerTable, SqlServerColumn>
     {
-        private string ConnectionString { get; set; }
-
-        public SqlServerDatabaseScanner(string connectionString)
+        public List<SqlServerColumn> GetColumnsFromDatabase(string connectionString, string databaseName, string schema)
         {
-            ConnectionString = connectionString;
-        }
-
-        public List<SqlServerColumn> GetColumnsFromDatabase(string databaseName, string schema)
-        {
-            using(var conn = new SqlConnection(ConnectionString))
+            using(var conn = new SqlConnection(connectionString))
             {
                 var columnsQuery = @"SELECT *,
                                          CASE 
@@ -36,9 +29,9 @@ namespace DbReflector.Databases
             }
         }
 
-        public List<SqlServerColumn> GetColumnsFromDatabaseWithPK(string databaseName, string schema)
+        public List<SqlServerColumn> GetColumnsFromDatabaseWithPK(string connectionString, string databaseName, string schema)
         {
-            using(var conn = new SqlConnection(ConnectionString))
+            using(var conn = new SqlConnection(connectionString))
             {
                 var columnsWithPrimaryKeyQuery = @"SELECT  CC.COLUMN_NAME, CC.TABLE_NAME, CC.TABLE_CATALOG
                                                    FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS C
@@ -56,9 +49,9 @@ namespace DbReflector.Databases
             }
         }
 
-        public List<SqlServerTable> GetTablesFromDatabase(string databaseName, string schema)
+        public List<SqlServerTable> GetTablesFromDatabase(string connectionString, string databaseName, string schema)
         {
-            using(var conn = new SqlConnection(ConnectionString))
+            using(var conn = new SqlConnection(connectionString))
             {
                 var tablesQuery = "select * from information_schema.tables where table_catalog = @database and table_schema = @schema and table_type = 'BASE TABLE'";
 

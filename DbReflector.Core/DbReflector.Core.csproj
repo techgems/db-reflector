@@ -8,6 +8,7 @@
     <PackageReference Include="Microsoft.Build" Version="16.10.0" />
     <PackageReference Include="Microsoft.Build.Framework" Version="16.10.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="3.11.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="5.0.0" />
   </ItemGroup>
 
