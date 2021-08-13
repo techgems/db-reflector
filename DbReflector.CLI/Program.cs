@@ -7,23 +7,29 @@ using System.Text;
 using System.Threading.Tasks;
 using DbReflector.Common.CommandModels;
 using DbReflector.Common;
+using Microsoft.Extensions.Hosting;
+using DbReflector.Core.DI;
+using DbReflector.Core;
 
 namespace DbReflector.CLI
 {
     //TO DO: Add DI.
     public class Program
     {
-        static void Reflect()
+        public Program(IOrchestrator orchestrator)
         {
-
+            _orchestrator = orchestrator;
         }
 
-        static void Generate()
+        static IHostBuilder CreateHostBuilder(string[] args)
         {
-
+            return Host.CreateDefaultBuilder(args).ConfigureServices(services =>
+            {
+                services.AddDbReflector();
+            });
         }
 
-        static void Scan(string dbName, string connectionString, string outputFolder, string dbEngine, bool forceOverride, IConsole console)
+        static SupportedDatabases MatchDbEngineString(string dbEngine)
         {
             SupportedDatabases databaseEngine = SupportedDatabases.SqlServer;
 
@@ -39,6 +45,30 @@ namespace DbReflector.CLI
                     break;
             }
 
+            return databaseEngine;
+        }
+
+        static void Reflect(string dbName, string projectPath, string connectionString, string dbEngine, bool force, List<string> tablesToIgnore, IConsole console)
+        {
+            SupportedDatabases databaseEngine = MatchDbEngineString(dbEngine);
+
+            var commandModel = new ReflectCommandModel()
+            {
+                DatabaseName = dbName,
+                CSharpProjectFilePath = projectPath,
+                EntitiesFolder = "Entities",
+                TablesToIgnore = tablesToIgnore,
+                ConnectionString = connectionString,
+                CaseToOutput =  EntityOutputCasing.PascalCase,
+                ForceRecreate = force,
+                DatabaseEngine = databaseEngine
+            };
+        }
+
+        static void Scan(string dbName, string connectionString, string outputFolder, string dbEngine, bool forceOverride, IConsole console)
+        {
+            SupportedDatabases databaseEngine = MatchDbEngineString(dbEngine);
+
             var commandModel = new ScanCommandModel()
             {
                 DatabaseName = dbName,
@@ -53,6 +83,9 @@ namespace DbReflector.CLI
 
         public static async Task<int> Main(string[] args)
         {
+            //Setup DI.
+            var host = CreateHostBuilder(args).Build();
+
             var rootCommand = new RootCommand();
             rootCommand.Name = "db-reflector";
             rootCommand.Description = "A productivity tool for automating the writing of boring Data Access code.";
@@ -89,12 +122,48 @@ namespace DbReflector.CLI
             scanCommand.Handler = CommandHandler.Create<string, string, string, string, bool, IConsole>(Scan);
             rootCommand.Add(scanCommand);
 
-            var generateCommand = new Command("generate");
-            rootCommand.Add(generateCommand);
+            var reflectCommand = new Command("reflect")
+            {
+                new Option<string>("-db")
+                {
+                    Description = "Database name.",
+                    Required = true
+                },
+                new Option<string>("-c")
+                {
+                    Description = "Connection string.",
+                    Required = true
+                },
+                new Option<string>("-csproj")
+                {
+                    Description = "C# Project path.",
+                    Required = true
+                },
+                new Option<string>("-e", getDefaultValue: () => "SQL Server")
+                {
+                    Description = "The database engine that you want to scan. SQL Server is assumed when this option is omitted.",
+                    Required = false
+                },
+                new Option<bool>("-f", getDefaultValue: () => false)
+                {
+                    Description = "If a model is already stored in disk, this flag must be set to true to override the previous model.",
+                    Required = false
+                },
+                new Option<List<string>>("-i", getDefaultValue: () => new List<string>())
+                {
+                    Description = "List of tables to ignore",
+                    Required = false
+                }
+            };
 
-            var reflectCommand = new Command("reflect");
+            reflectCommand.Handler = CommandHandler.Create<string, string, string, string, bool, List<string>, IConsole>(Reflect);
             rootCommand.Add(reflectCommand);
+
             return await rootCommand.InvokeAsync(args);
         }
+
+        private readonly IOrchestrator _orchestrator;
+
+        
     }
 }

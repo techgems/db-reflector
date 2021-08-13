@@ -18,7 +18,7 @@ using DbReflector.Core.DI;
 
 namespace DbReflector.Core
 {
-    public class Orchestrator
+    public class Orchestrator : IOrchestrator
     {
         private readonly IPostgresMetadataMapper _postgresMetadataMapper;
         private readonly ISqlServerMetadataMapper _sqlServerMetadataMapper;
@@ -102,14 +102,6 @@ namespace DbReflector.Core
                 TablesToIgnore = new List<string>() { "VersionInfo" } //Default migrations table for Fluent Migrator.
             };
         }*/
-
-        private static IHostBuilder CreateHostBuilder(string[] args)
-        {
-            return Host.CreateDefaultBuilder(args).ConfigureServices(services =>
-            {
-                services.AddDbReflector();
-            });
-        }
     }
 }
 

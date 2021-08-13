@@ -10,7 +10,6 @@ namespace DbReflector.Common.CommandModels
     {
         public string DatabaseName { get; set; } = "";
         public string CSharpProjectFilePath { get; set; } = "";
-        public bool GenerateRepoDbMapper { get; init; }
         public string ConnectionString { get; set; } = "";
         public SupportedDatabases DatabaseEngine { get; init; }
         public string EntitiesFolder { get; set; } = "Entities";

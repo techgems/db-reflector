@@ -18,7 +18,7 @@ namespace DbReflector.Core.DI
     {
         public static void AddDbReflector(this IServiceCollection services)
         {
-            services.AddTransient<Orchestrator>();
+            services.AddTransient<IOrchestrator, Orchestrator>();
             services.AddTransient<IDbScanner<PostgresTable, PostgresColumn>>();
             services.AddTransient<IDbScanner<SqlServerTable, SqlServerColumn>>();
             services.AddTransient<IGenerator, EntityGenerator>();
