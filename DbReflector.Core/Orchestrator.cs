@@ -15,6 +15,7 @@ using DbReflector.Core.Exceptions;
 using DbReflector.Databases.Exceptions;
 using DbReflector.Databases.Models;
 using DbReflector.Core.DI;
+using DbReflector.Common.CommandModels;
 
 namespace DbReflector.Core
 {
@@ -88,20 +89,13 @@ namespace DbReflector.Core
             Console.Out.WriteLine("Finished process.");
         }
 
-        /*static void InitConfig()
+        public void Reflect(ReflectCommandModel reflectCommand)
         {
-            //Postgres Config
-            Configuration = new CommandLineConfiguration
-            {
-                CSharpProjectFilePath = "C:/Users/cjime/Desktop/Professional Projects/LaCarte/LaCarteAPI/NewSolution/RestaurantAdmin/LaCarte.RestaurantAdmin.DataAccess/LaCarte.RestaurantAdmin.DataAccess.csproj",
-                GenerateRepoDbMapper = true,
-                DatabaseName = "restaurant-admin",
-                ConnectionString = "User ID=postgres;Password=123456;Server=localhost;Port=5432;Database=restaurant-admin;",
-                DatabaseEngine = SupportedDatabases.Postgres,
-                ForceRecreate = true,
-                TablesToIgnore = new List<string>() { "VersionInfo" } //Default migrations table for Fluent Migrator.
-            };
-        }*/
+        }
+
+        public void Scan(ScanCommandModel scanCommand)
+        {
+        }
     }
 }
 

@@ -13,9 +13,25 @@ using DbReflector.Core;
 
 namespace DbReflector.CLI
 {
-    //TO DO: Add DI.
     public class Program
     {
+        /*static void InitConfig()
+        {
+            //Postgres Config
+            Configuration = new CommandLineConfiguration
+            {
+                CSharpProjectFilePath = "C:/Users/cjime/Desktop/Professional Projects/LaCarte/LaCarteAPI/NewSolution/RestaurantAdmin/LaCarte.RestaurantAdmin.DataAccess/LaCarte.RestaurantAdmin.DataAccess.csproj",
+                GenerateRepoDbMapper = true,
+                DatabaseName = "restaurant-admin",
+                ConnectionString = "User ID=postgres;Password=123456;Server=localhost;Port=5432;Database=restaurant-admin;",
+                DatabaseEngine = SupportedDatabases.Postgres,
+                ForceRecreate = true,
+                TablesToIgnore = new List<string>() { "VersionInfo" } //Default migrations table for Fluent Migrator.
+            };
+        }*/
+
+        private readonly IOrchestrator _orchestrator;
+
         public Program(IOrchestrator orchestrator)
         {
             _orchestrator = orchestrator;
@@ -48,7 +64,7 @@ namespace DbReflector.CLI
             return databaseEngine;
         }
 
-        static void Reflect(string dbName, string projectPath, string connectionString, string dbEngine, bool force, List<string> tablesToIgnore, IConsole console)
+        void Reflect(string dbName, string projectPath, string connectionString, string dbEngine, bool force, List<string> tablesToIgnore, IConsole console)
         {
             SupportedDatabases databaseEngine = MatchDbEngineString(dbEngine);
 
@@ -63,9 +79,11 @@ namespace DbReflector.CLI
                 ForceRecreate = force,
                 DatabaseEngine = databaseEngine
             };
+
+            _orchestrator.Reflect(commandModel);
         }
 
-        static void Scan(string dbName, string connectionString, string outputFolder, string dbEngine, bool forceOverride, IConsole console)
+        void Scan(string dbName, string connectionString, string outputFolder, string dbEngine, bool forceOverride, IConsole console)
         {
             SupportedDatabases databaseEngine = MatchDbEngineString(dbEngine);
 
@@ -78,7 +96,7 @@ namespace DbReflector.CLI
                 DbEngine = databaseEngine
             };
 
-            //Execute command.
+            _orchestrator.Scan(commandModel);
         }
 
         public static async Task<int> Main(string[] args)
@@ -160,10 +178,6 @@ namespace DbReflector.CLI
             rootCommand.Add(reflectCommand);
 
             return await rootCommand.InvokeAsync(args);
-        }
-
-        private readonly IOrchestrator _orchestrator;
-
-        
+        } 
     }
 }
