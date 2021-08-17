@@ -45,6 +45,7 @@ namespace DbReflector.CLI
         {
             return Host.CreateDefaultBuilder(args).ConfigureServices(services =>
             {
+                services.AddTransient<Program>();
                 services.AddDbReflector();
             });
         }
