@@ -10,6 +10,7 @@ using DbReflector.Common;
 using Microsoft.Extensions.Hosting;
 using DbReflector.Core.DI;
 using DbReflector.Core;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DbReflector.CLI
 {
@@ -99,11 +100,9 @@ namespace DbReflector.CLI
             _orchestrator.Scan(commandModel);
         }
 
-        public static async Task<int> Main(string[] args)
-        {
-            //Setup DI.
-            var host = CreateHostBuilder(args).Build();
 
+        async Task<int> Run(string[] args)
+        {
             var rootCommand = new RootCommand();
             rootCommand.Name = "db-reflector";
             rootCommand.Description = "A productivity tool for automating the writing of boring Data Access code.";
@@ -178,6 +177,13 @@ namespace DbReflector.CLI
             rootCommand.Add(reflectCommand);
 
             return await rootCommand.InvokeAsync(args);
+        }
+
+        public static async Task<int> Main(string[] args)
+        {
+            var host = CreateHostBuilder(args).Build();
+
+            return await host.Services.GetRequiredService<Program>().Run(args);
         } 
     }
 }
