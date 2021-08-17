@@ -13,7 +13,7 @@ namespace CodeGenerationRoslynTest.Generators
 {
     public class RepoDbMapperGenerator : IGenerator
     {
-        public void Generate(CommandLineConfiguration cliConfig, VSProjectMetadata projectMetadata, Database database)
+        public void Generate(string entitiesFolder, bool force, VSProjectMetadata projectMetadata, Database database)
         {
             var mapperStringBuilder = new StringBuilder();
 
@@ -77,7 +77,7 @@ namespace CodeGenerationRoslynTest.Generators
 
             if(File.Exists(filePath))
             {
-                if(cliConfig.ForceRecreate)
+                if(force)
                 {
                     WriteCodeFileToDisk(filePath, mapperStringBuilder.ToString());
                 }

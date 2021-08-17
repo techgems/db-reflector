@@ -10,6 +10,6 @@ namespace DbReflector.CodeGeneration.Interfaces
 {
     public interface IGenerator
     {
-        public void Generate(CommandLineConfiguration cliConfig, VSProjectMetadata projectMetadata, Database database);
+        public void Generate(string entitiesFolder, bool force, VSProjectMetadata projectMetadata, Database database);
     }
 }

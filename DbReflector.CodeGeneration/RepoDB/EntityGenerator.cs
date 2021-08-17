@@ -12,9 +12,9 @@ namespace DbReflector.CodeGeneration.RepoDB
 {
     public class EntityGenerator : IGenerator
     {
-        public void Generate(CommandLineConfiguration cliConfig, VSProjectMetadata projectMetadata, Database database)
+        public void Generate(string entitiesFolder, bool force, VSProjectMetadata projectMetadata, Database database)
         {
-            var entitiesDirectory = new DirectoryInfo($"{projectMetadata.BasePath}/{cliConfig.EntitiesFolder}");
+            var entitiesDirectory = new DirectoryInfo($"{projectMetadata.BasePath}/{entitiesFolder}");
             var shouldGenerate = false;
 
             if(entitiesDirectory.Exists)
@@ -22,7 +22,7 @@ namespace DbReflector.CodeGeneration.RepoDB
                 //Entities have already been created or files exist in the target folder.
                 if(DirectoryHasFiles(entitiesDirectory.FullName))
                 {
-                    if(!cliConfig.ForceRecreate)
+                    if(!force)
                     {
                         throw new CodeGenerationException("To be able to run the generation routine when you have previously generated code, you must set ForceRecreate to true or your target directories must be empty.");
                     }
@@ -41,7 +41,7 @@ namespace DbReflector.CodeGeneration.RepoDB
             }
             else
             {
-                Directory.CreateDirectory($"{projectMetadata.BasePath}/{cliConfig.EntitiesFolder}");
+                Directory.CreateDirectory($"{projectMetadata.BasePath}/{entitiesFolder}");
                 shouldGenerate = true;
             }
 
@@ -49,8 +49,8 @@ namespace DbReflector.CodeGeneration.RepoDB
             {
                 foreach (var tableMeta in database.Tables)
                 {
-                    var entityCode = GenerateEntity(cliConfig.EntitiesFolder, tableMeta, projectMetadata);
-                    WriteEntityFileToDisk($"{projectMetadata.BasePath}/{cliConfig.EntitiesFolder}/{tableMeta.FormattedTableName}.cs", entityCode);
+                    var entityCode = GenerateEntity(entitiesFolder, tableMeta, projectMetadata);
+                    WriteEntityFileToDisk($"{projectMetadata.BasePath}/{entitiesFolder}/{tableMeta.FormattedTableName}.cs", entityCode);
                 }
             }
         }

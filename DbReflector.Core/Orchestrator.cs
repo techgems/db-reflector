@@ -13,8 +13,6 @@ using DbReflector.CodeGeneration.Models;
 using DbReflector.CodeGeneration.Exceptions;
 using DbReflector.Core.Exceptions;
 using DbReflector.Databases.Exceptions;
-using DbReflector.Databases.Models;
-using DbReflector.Core.DI;
 using DbReflector.Common.CommandModels;
 
 namespace DbReflector.Core
@@ -46,55 +44,48 @@ namespace DbReflector.Core
             }
         }
 
-        public void Execute(CommandLineConfiguration config)
+        public void Reflect(ReflectCommandModel command)
+        {
+            var databaseMetadata = new Database();
+            var projectMetadata = _projectLoader.GetCSharpProjectMetadata(command.CSharpProjectFilePath);
+
+            switch (command.DatabaseEngine)
+            {
+                case SupportedDatabases.Postgres:
+                    databaseMetadata = _postgresMetadataMapper.CreateGeneratorModel(command.ConnectionString, command.DatabaseName, command.TablesToIgnore);
+                    break;
+                case SupportedDatabases.SqlServer:
+                    databaseMetadata = _sqlServerMetadataMapper.CreateGeneratorModel(command.ConnectionString, command.DatabaseName, command.TablesToIgnore);
+                    break;
+            }
+
+            //Entities must always be generated.
+            _entityGenerator.Generate(command.EntitiesFolder, command.ForceRecreate, projectMetadata, databaseMetadata);
+
+            _mapperGenerator.Generate(command.EntitiesFolder, command.ForceRecreate, projectMetadata, databaseMetadata);
+
+        }
+
+        public void Scan(ScanCommandModel command)
         {
             try
             {
                 var databaseMetadata = new Database();
-                var projectMetadata = _projectLoader.GetCSharpProjectMetadata(config.CSharpProjectFilePath);
 
-                switch (config.DatabaseEngine)
+                switch (command.DatabaseEngine)
                 {
                     case SupportedDatabases.Postgres:
-                        databaseMetadata = _postgresMetadataMapper.CreateGeneratorModel(config.ConnectionString, config.DatabaseName, config.TablesToIgnore);
+                        databaseMetadata = _postgresMetadataMapper.CreateGeneratorModel(command.ConnectionString, command.DatabaseName, command.TablesToIgnore);
                         break;
                     case SupportedDatabases.SqlServer:
-                        databaseMetadata = _sqlServerMetadataMapper.CreateGeneratorModel(config.ConnectionString, config.DatabaseName, config.TablesToIgnore);
+                        databaseMetadata = _sqlServerMetadataMapper.CreateGeneratorModel(command.ConnectionString, command.DatabaseName, command.TablesToIgnore);
                         break;
                 }
-
-                //Entities must always be generated.
-                _entityGenerator.Generate(config, projectMetadata, databaseMetadata);
-
-                if (config.GenerateRepoDbMapper)
-                    _mapperGenerator.Generate(config, projectMetadata, databaseMetadata);
-            }
-            catch (CodeGenerationException codeGenException)
-            {
-                Console.Out.WriteLine($"Code generation failed. Exception Message: {codeGenException.Message}");
-            }
-            catch (ProjectLoadException projectException)
-            {
-                Console.Out.WriteLine($"Project loading failed. Exception Message: {projectException.Message}");
-            }
-            catch (DatabaseScanningException databaseException)
-            {
-                Console.Out.WriteLine($"Database metadata failed to load. Exception Message: {databaseException.Message}");
             }
             catch (Exception e)
             {
-                Console.Out.WriteLine($"An unknown error has occurred. Exception Message: {e.Message}");
+
             }
-
-            Console.Out.WriteLine("Finished process.");
-        }
-
-        public void Reflect(ReflectCommandModel reflectCommand)
-        {
-        }
-
-        public void Scan(ScanCommandModel scanCommand)
-        {
         }
     }
 }

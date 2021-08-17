@@ -11,6 +11,9 @@ using Microsoft.Extensions.Hosting;
 using DbReflector.Core.DI;
 using DbReflector.Core;
 using Microsoft.Extensions.DependencyInjection;
+using DbReflector.Databases.Exceptions;
+using DbReflector.Core.Exceptions;
+using DbReflector.CodeGeneration.Exceptions;
 
 namespace DbReflector.CLI
 {
@@ -81,7 +84,28 @@ namespace DbReflector.CLI
                 DatabaseEngine = databaseEngine
             };
 
-            _orchestrator.Reflect(commandModel);
+            try
+            {
+                _orchestrator.Reflect(commandModel);
+            }
+            catch (CodeGenerationException codeGenException)
+            {
+                Console.Out.WriteLine($"Code generation failed. Exception Message: {codeGenException.Message}");
+            }
+            catch (ProjectLoadException projectException)
+            {
+                Console.Out.WriteLine($"Project loading failed. Exception Message: {projectException.Message}");
+            }
+            catch (DatabaseScanningException databaseException)
+            {
+                Console.Out.WriteLine($"Database metadata failed to load. Exception Message: {databaseException.Message}");
+            }
+            catch (Exception e)
+            {
+                Console.Out.WriteLine($"An unknown error has occurred. Exception Message: {e.Message}");
+            }
+
+            Console.Out.WriteLine("Finished process.");
         }
 
         void Scan(string dbName, string connectionString, string outputFolder, string dbEngine, bool forceOverride, IConsole console)
@@ -94,7 +118,7 @@ namespace DbReflector.CLI
                 ConnectionString = connectionString,
                 OutputFolder = outputFolder,
                 ForceOverride = forceOverride,
-                DbEngine = databaseEngine
+                DatabaseEngine = databaseEngine
             };
 
             _orchestrator.Scan(commandModel);
