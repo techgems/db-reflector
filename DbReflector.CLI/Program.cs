@@ -69,17 +69,17 @@ namespace DbReflector.CLI
             return databaseEngine;
         }
 
-        void Reflect(string dbName, string projectPath, string connectionString, string dbEngine, bool force, List<string> tablesToIgnore, IConsole console)
+        void Reflect(string database, string connString, string project, string engine, bool force, List<string> ignoreList, IConsole console)
         {
-            SupportedDatabases databaseEngine = MatchDbEngineString(dbEngine);
+            SupportedDatabases databaseEngine = MatchDbEngineString(engine);
 
             var commandModel = new ReflectCommandModel()
             {
-                DatabaseName = dbName,
-                CSharpProjectFilePath = projectPath,
+                DatabaseName = database,
+                CSharpProjectFilePath = project,
                 EntitiesFolder = "Entities",
-                TablesToIgnore = tablesToIgnore,
-                ConnectionString = connectionString,
+                TablesToIgnore = ignoreList,
+                ConnectionString = connString,
                 CaseToOutput =  EntityOutputCasing.PascalCase,
                 ForceRecreate = force,
                 DatabaseEngine = databaseEngine
@@ -109,21 +109,21 @@ namespace DbReflector.CLI
             Console.Out.WriteLine("Finished process.");
         }
 
-        void Scan(string dbName, string connectionString, string outputFolder, string dbEngine, bool forceOverride, IConsole console)
+        /*void Scan(string database, string connString, string outputFolder, string dbEngine, bool forceOverride, IConsole console)
         {
             SupportedDatabases databaseEngine = MatchDbEngineString(dbEngine);
 
             var commandModel = new ScanCommandModel()
             {
-                DatabaseName = dbName,
-                ConnectionString = connectionString,
+                DatabaseName = database,
+                ConnectionString = connString,
                 OutputFolder = outputFolder,
                 ForceOverride = forceOverride,
                 DatabaseEngine = databaseEngine
             };
 
             _orchestrator.Scan(commandModel);
-        }
+        }*/
 
 
         async Task<int> Run(string[] args)
@@ -132,66 +132,34 @@ namespace DbReflector.CLI
             rootCommand.Name = "db-reflector";
             rootCommand.Description = "A productivity tool for automating the writing of boring Data Access code.";
 
-            var scanCommand = new Command("scan") {
-                new Option<string>("-db")
-                {
-                    Description = "The name of the database to scan.",
-                    Required = true
-                },
-                new Option<string>("-c")
-                {
-                    Description = "The connection string to utilize.",
-                    Required = true
-                },
-                new Option<string>("-o")
-                {
-                    Description = "The directory to store the database JSON model.",
-                    Required = true
-                },
-                new Option<string>("-e", getDefaultValue: () => "SQL Server")
-                {
-                    Description = "The database engine that you want to scan. SQL Server is assumed when this option is omitted.",
-                    Required = false
-                },
-
-                new Option<bool>("-f", getDefaultValue: () => false)
-                {
-                    Description = "If a model is already stored in disk, this flag must be set to true to override the previous model.",
-                    Required = false
-                }
-            };
-
-            scanCommand.Handler = CommandHandler.Create<string, string, string, string, bool, IConsole>(Scan);
-            rootCommand.Add(scanCommand);
-
             var reflectCommand = new Command("reflect")
             {
-                new Option<string>("-db")
+                new Option<string>(new string[] {"-d", "--database" })
                 {
                     Description = "Database name.",
                     Required = true
                 },
-                new Option<string>("-c")
+                new Option<string>(new string[] {"-c", "--conn-string" })
                 {
                     Description = "Connection string.",
                     Required = true
                 },
-                new Option<string>("-csproj")
+                new Option<string>(new string[] {"-p", "--project" })
                 {
                     Description = "C# Project path.",
                     Required = true
                 },
-                new Option<string>("-e", getDefaultValue: () => "SQL Server")
+                new Option<string>(new string[] {"-e", "--engine" }, getDefaultValue: () => "SQL Server")
                 {
                     Description = "The database engine that you want to scan. SQL Server is assumed when this option is omitted.",
                     Required = false
                 },
-                new Option<bool>("-f", getDefaultValue: () => false)
+                new Option<bool>(new string[] {"-f", "--force" }, getDefaultValue: () => false)
                 {
                     Description = "If a model is already stored in disk, this flag must be set to true to override the previous model.",
                     Required = false
                 },
-                new Option<List<string>>("-i", getDefaultValue: () => new List<string>())
+                new Option<List<string>>(new string[] {"-i", "--ignore-list" }, getDefaultValue: () => new List<string>())
                 {
                     Description = "List of tables to ignore",
                     Required = false

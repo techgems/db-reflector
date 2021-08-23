@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DbReflector.CLI": {
+      "commandName": "Project",
+      "commandLineArgs": "db-reflector reflect -d database -c connection -p route -e pgsql -f true -i migrations migrations2"
+    }
+  }
+}
