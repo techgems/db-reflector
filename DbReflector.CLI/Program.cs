@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using DbReflector.Databases.Exceptions;
 using DbReflector.Core.Exceptions;
 using DbReflector.CodeGeneration.Exceptions;
+using Spectre.Console;
 
 namespace DbReflector.CLI
 {
@@ -80,7 +81,7 @@ namespace DbReflector.CLI
                 EntitiesFolder = "Entities",
                 TablesToIgnore = ignoreList,
                 ConnectionString = connString,
-                CaseToOutput =  EntityOutputCasing.PascalCase,
+                CaseToOutput = EntityOutputCasing.PascalCase,
                 ForceRecreate = force,
                 DatabaseEngine = databaseEngine
             };
@@ -91,40 +92,23 @@ namespace DbReflector.CLI
             }
             catch (CodeGenerationException codeGenException)
             {
-                Console.Out.WriteLine($"Code generation failed. Exception Message: {codeGenException.Message}");
+                AnsiConsole.MarkupLine($"[red]Code generation failed. Exception Message: {codeGenException.Message}[/]");
             }
             catch (ProjectLoadException projectException)
             {
-                Console.Out.WriteLine($"Project loading failed. Exception Message: {projectException.Message}");
+                AnsiConsole.MarkupLine($"[red]Project loading failed. Exception Message: {projectException.Message}[/]");
             }
             catch (DatabaseScanningException databaseException)
             {
-                Console.Out.WriteLine($"Database metadata failed to load. Exception Message: {databaseException.Message}");
+                AnsiConsole.MarkupLine($"[red]Database metadata failed to load. Exception Message: {databaseException.Message}[/]");
             }
             catch (Exception e)
             {
-                Console.Out.WriteLine($"An unknown error has occurred. Exception Message: {e.Message}");
+                AnsiConsole.MarkupLine($"[red]An unknown error has occurred. Exception Message: {e.Message}[/]");
             }
 
-            Console.Out.WriteLine("Finished process.");
+            AnsiConsole.MarkupLine("[green]Generation was successful! X tables found. Y tables ignored.[/]");
         }
-
-        /*void Scan(string database, string connString, string outputFolder, string dbEngine, bool forceOverride, IConsole console)
-        {
-            SupportedDatabases databaseEngine = MatchDbEngineString(dbEngine);
-
-            var commandModel = new ScanCommandModel()
-            {
-                DatabaseName = database,
-                ConnectionString = connString,
-                OutputFolder = outputFolder,
-                ForceOverride = forceOverride,
-                DatabaseEngine = databaseEngine
-            };
-
-            _orchestrator.Scan(commandModel);
-        }*/
-
 
         async Task<int> Run(string[] args)
         {
@@ -169,6 +153,11 @@ namespace DbReflector.CLI
             reflectCommand.Handler = CommandHandler.Create<string, string, string, string, bool, List<string>, IConsole>(Reflect);
             rootCommand.Add(reflectCommand);
 
+            AnsiConsole.Render(
+                new FigletText("DB REFLECTOR")
+                .Color(new Color(89, 48, 1))
+            );
+
             return await rootCommand.InvokeAsync(args);
         }
 
@@ -177,6 +166,6 @@ namespace DbReflector.CLI
             var host = CreateHostBuilder(args).Build();
 
             return await host.Services.GetRequiredService<Program>().Run(args);
-        } 
+        }
     }
 }
