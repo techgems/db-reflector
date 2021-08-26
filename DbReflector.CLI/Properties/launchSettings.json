@@ -2,7 +2,7 @@
   "profiles": {
     "DbReflector.CLI": {
       "commandName": "Project",
-      "commandLineArgs": "db-reflector reflect -d database -c connection -p route -e pgsql -f true -i migrations migrations2"
+      "commandLineArgs": "db-reflector reflect -d restaurant-admin -c \"User ID=postgres;Password=123456;Server=localhost;Port=5432;Database=la-carte-admin;\"-p \"C:\\Users\\cjime\\Desktop\\Professional Projects\\LaCarte\\LaCarteAPI\\Backend\\SuperAdmin\\LaCarte.SuperAdmin.DataAccess\\LaCarte.SuperAdmin.DataAccess.csproj\" -e pgsql -f true -i VersionInfo"
     }
   }
 }
