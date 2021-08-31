@@ -155,7 +155,7 @@ namespace DbReflector.CLI
 
             AnsiConsole.Render(
                 new FigletText("DB REFLECTOR")
-                .Color(new Color(89, 48, 1))
+                .Color(new Color(20, 20, 200))
             );
 
             return await rootCommand.InvokeAsync(args);

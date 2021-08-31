@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30717.126
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31612.314
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbReflector.CLI", "DbReflector.CLI\DbReflector.CLI.csproj", "{722E9B7D-43CD-4949-A41A-79F50C245636}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbReflector.Databases", "DbReflector.Databases\DbReflector.Databases.csproj", "{F3DE7615-5F34-4B06-814C-88FA1BF6F4EF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbReflector.Common", "DbReflector.Utils\DbReflector.Common.csproj", "{03B417EC-3E3C-4160-A9FB-0BF1CA48F115}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbReflector.Test", "DbReflector.Test\DbReflector.Test.csproj", "{13444A9A-CE69-4C38-889E-7DC0365973B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{03B417EC-3E3C-4160-A9FB-0BF1CA48F115}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03B417EC-3E3C-4160-A9FB-0BF1CA48F115}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03B417EC-3E3C-4160-A9FB-0BF1CA48F115}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13444A9A-CE69-4C38-889E-7DC0365973B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13444A9A-CE69-4C38-889E-7DC0365973B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13444A9A-CE69-4C38-889E-7DC0365973B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13444A9A-CE69-4C38-889E-7DC0365973B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
