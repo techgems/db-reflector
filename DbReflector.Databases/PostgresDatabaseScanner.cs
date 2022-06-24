@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Dapper;
 using Npgsql;
+using RepoDb;
 
 namespace DbReflector.Databases
 {
@@ -13,11 +13,12 @@ namespace DbReflector.Databases
     {
         public List<PostgresTable> GetTablesFromDatabase(string connectionString, string databaseName, string schema = "public")
         {
+            RepoDb.PostgreSqlBootstrap.Initialize();
             using (var conn = new NpgsqlConnection(connectionString))
             {
-                var tablesQuery = "select * from information_schema.tables where table_catalog = @database and table_schema = @schema";
+                var tablesQuery = "select table_catalog, table_schema, table_name from information_schema.tables where table_catalog = @database and table_schema = @schema";
 
-                var tables = conn.Query<PostgresTable>(tablesQuery,
+                var tables = conn.ExecuteQuery<PostgresTable>(tablesQuery,
                     new { database = databaseName, schema = schema }).ToList();
 
                 return tables;
@@ -26,11 +27,12 @@ namespace DbReflector.Databases
 
         public List<PostgresColumn> GetColumnsFromDatabase(string connectionString, string databaseName, string schema = "public")
         {
+            RepoDb.PostgreSqlBootstrap.Initialize();
             using (var conn = new NpgsqlConnection(connectionString))
             {
                 var columnsQuery = "select * from information_schema.columns where table_catalog = @database and table_schema = @schema";
 
-                var columns = conn.Query<PostgresColumn>(columnsQuery, new { database = databaseName, schema = schema }).ToList();
+                var columns = conn.ExecuteQuery<PostgresColumn>(columnsQuery, new { database = databaseName, schema = schema }).ToList();
 
                 return columns;
             }
@@ -38,7 +40,8 @@ namespace DbReflector.Databases
 
         public List<PostgresColumn> GetColumnsFromDatabaseWithPK(string connectionString, string databaseName, string schema)
         {
-            using(var conn = new NpgsqlConnection(connectionString))
+            RepoDb.PostgreSqlBootstrap.Initialize();
+            using (var conn = new NpgsqlConnection(connectionString))
             {
                 var columnsWithPrimaryKeyQuery = @"select distinct(col.column_name), col.table_name, col.table_catalog 
                                                     from information_schema.columns as col
@@ -46,7 +49,7 @@ namespace DbReflector.Databases
                                                     left join information_schema.table_constraints as con on con.constraint_name = cus.constraint_name 
                                                     where col.table_catalog = @database and col.table_schema = @schema and con.constraint_type = 'PRIMARY KEY'";
 
-                var columns = conn.Query<PostgresColumn>(columnsWithPrimaryKeyQuery, new { database = databaseName, schema = schema }).ToList();
+                var columns = conn.ExecuteQuery<PostgresColumn>(columnsWithPrimaryKeyQuery, new { database = databaseName, schema = schema }).ToList();
 
                 return columns;
             }

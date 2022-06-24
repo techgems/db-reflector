@@ -20,21 +20,6 @@ namespace DbReflector.CLI
 {
     public class Program
     {
-        /*static void InitConfig()
-        {
-            //Postgres Config
-            Configuration = new CommandLineConfiguration
-            {
-                CSharpProjectFilePath = "C:/Users/cjime/Desktop/Professional Projects/LaCarte/LaCarteAPI/NewSolution/RestaurantAdmin/LaCarte.RestaurantAdmin.DataAccess/LaCarte.RestaurantAdmin.DataAccess.csproj",
-                GenerateRepoDbMapper = true,
-                DatabaseName = "restaurant-admin",
-                ConnectionString = "User ID=postgres;Password=123456;Server=localhost;Port=5432;Database=restaurant-admin;",
-                DatabaseEngine = SupportedDatabases.Postgres,
-                ForceRecreate = true,
-                TablesToIgnore = new List<string>() { "VersionInfo" } //Default migrations table for Fluent Migrator.
-            };
-        }*/
-
         private readonly IOrchestrator _orchestrator;
 
         public Program(IOrchestrator orchestrator)

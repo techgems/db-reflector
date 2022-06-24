@@ -1,17 +1,16 @@
 {
   "profiles": {
-    "WSL": {
-      "commandName": "WSL2",
-      "environmentVariables": {},
-      "distributionName": ""
-    },
-    "Reflect Command - Super Admin DB": {
-      "commandName": "Project",
-      "commandLineArgs": "db-reflector reflect -d restaurant-admin -c \"User ID=postgres;Password=123456;Server=localhost;Port=5432;Database=la-carte-admin;\" -p \"C:\\Users\\cjime\\Desktop\\Professional Projects\\db-reflector\\DbReflector.Test\\DbReflector.Test.csproj\" -e pgsql -f true -i VersionInfo"
-    },
     "Reflect Command - TrainMe DB": {
       "commandName": "Project",
-      "commandLineArgs": "db-reflector reflect -d trainme-dev -c \"User ID=postgres;Password=yvTjNrrgcw3b6TNznA457jGTweSRGhff;Server=development.c9txp2x8c0pm.us-east-1.rds.amazonaws.com;Port=5432;Database=trainme-dev;\" -p \"C:\\Users\\cjime\\Desktop\\Professional Projects\\db-reflector\\DbReflector.Test\\DbReflector.Test.csproj\" -e pgsql -f true -i VersionInfo"
+      "commandLineArgs": "db-reflector reflect -d trainme-dev -c \"User ID=postgres;Password=yvTjNrrgcw3b6TNznA457jGTweSRGhff;Server=development.c9txp2x8c0pm.us-east-1.rds.amazonaws.com;Port=5432;Database=trainme-dev;\" -p \"C:\\Users\\Carlos.Jimenez\\Desktop\\Carlos\\db-reflector\\DbReflector.Test\\DbReflector.Test.csproj\" -e pgsql -f true -i VersionInfo"
+    },
+    "Reflect Command - LeadDog Local": {
+      "commandName": "Project",
+      "commandLineArgs": "db-reflector reflect -d lead-dog -c \"User ID=postgres;Password=123456;Server=localhost;Port=5432;Database=lead-dog\" -p \"C:\\Users\\Carlos.Jimenez\\Desktop\\Imaginuity\\leaddog\\New\\LeadDog.DataAccess\\LeadDog.DataAccess.csproj\" -e pgsql -f true -i schemaversions"
+    },
+    "Reflect Command - Identity Local": {
+      "commandName": "Project",
+      "commandLineArgs": "db-reflector reflect -d IdentityCustom -c \"Server=.;Database=IdentityCustom;Trusted_Connection=True;\" -p \"C:\\Users\\Carlos.Jimenez\\Desktop\\Carlos\\db-reflector\\DbReflector.Test\\DbReflector.Test.csproj\" -e mssql -f true -i VersionInfo"
     }
   }
 }
